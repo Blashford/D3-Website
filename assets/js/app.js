@@ -35,11 +35,11 @@ d3.csv("/assets/data/data.csv").then(data => {
     })
 
     var xLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.poverty)])
+        .domain([d3.min(data, d => d.poverty) - 1, d3.max(data, d => d.poverty) + 1])
         .range([0, width]);
     
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.healthcare)])
+        .domain([d3.min(data, d => d.healthcare) - 1, d3.max(data, d => d.healthcare) + 1])
         .range([height, 0])
     
     var xAxis = d3.axisBottom(xLinearScale);
@@ -53,14 +53,32 @@ d3.csv("/assets/data/data.csv").then(data => {
     chartGroup.append("g")
         .call(yAxis);
     
-    var circlesGroup = chartGroup.selectAll("circle")
-        .data(data)
+
+    var circles = chartGroup.selectAll("g.circle")
+    
+    circles = circles.data(data)
         .enter()
-        .append("circle")
-        .attr("cx", d=> d.poverty)
-        .attr("cy", d=> d.healthcare)
+        .append("g")
+        .classed("stateCircle", true)
+
+    circles.append("svg:circle")
+
+    circles.selectAll("circle")
+        .attr("cx", d=> xLinearScale(d.poverty))
+        .attr("cy", d=> yLinearScale(d.healthcare))
         .attr("r", "10")
-        .attr("fill", "light blue")
-        .attr("text", d=> d.abbr)
+    
+    circles.append("text")
+
+    circles.selectAll("text")
+        .text(d => d.abbr)
+        .attr("text-anchor", "middle")
+        .attr("x", d=> xLinearScale(d.poverty))
+        .attr("y", d=> yLinearScale(d.healthcare) +3)
+        .attr("font-size", "0.5em")
+        .classed("stateText", true)
+    
+    
+
 
 })
