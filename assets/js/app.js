@@ -1,7 +1,7 @@
 // @TODO: YOUR CODE HERE!
 
 
-var svgWidth = 1000;
+var svgWidth = 800;
 var svgHeight = 500;
 
 var margin = {
@@ -66,7 +66,7 @@ d3.csv("/assets/data/data.csv").then(data => {
     circles.selectAll("circle")
         .attr("cx", d=> xLinearScale(d.poverty))
         .attr("cy", d=> yLinearScale(d.healthcare))
-        .attr("r", "10")
+        .attr("r", "9")
     
     circles.append("text")
 
@@ -78,7 +78,18 @@ d3.csv("/assets/data/data.csv").then(data => {
         .attr("font-size", "0.5em")
         .classed("stateText", true)
     
-    
+    chartGroup.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "16px")
+    .classed("active", true)
+    .text("In Poverty (%)")
 
-
+    chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0-height/2)
+    .attr("y", 0-margin.left)
+    .attr("dy", "1em")
+    .classed("active", true)
+    .text("Lacks Healthcare (%)");
 })
