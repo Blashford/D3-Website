@@ -8,7 +8,7 @@ var margin = {
   top: 50,
   right: 60,
   bottom: 100,
-  left: 60
+  left: 100
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -76,20 +76,52 @@ d3.csv("/assets/data/data.csv").then(data => {
         .attr("x", d=> xLinearScale(d.poverty))
         .attr("y", d=> yLinearScale(d.healthcare) +3)
         .attr("font-size", "0.5em")
-        .classed("stateText", true)
+        .classed("stateText", true);
     
-    chartGroup.append("text")
+    var poverty = chartGroup.append("text")
     .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
     .attr("text-anchor", "middle")
     .attr("font-size", "16px")
     .classed("active", true)
-    .text("In Poverty (%)")
+    .text("In Poverty (%)");
 
-    chartGroup.append("text")
+    var age = chartGroup.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "16px")
+    .attr("dy", "1.25em")
+    .classed("inactive", true)
+    .text("Age (Median)");
+
+    var income = chartGroup.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "16px")
+    .attr("dy", "2.5em")
+    .classed("inactive", true)
+    .text("Household Income (Median)");
+
+    var healthcare = chartGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", 0-height/2)
     .attr("y", 0-margin.left)
-    .attr("dy", "1em")
+    .attr("dy", "4.25em")
     .classed("active", true)
     .text("Lacks Healthcare (%)");
+
+    var smokes = chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0-height/2)
+    .attr("y", 0-margin.left)
+    .attr("dy", "3em")
+    .classed("inactive", true)
+    .text("Smokes (%)");
+
+    var obese = chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0-height/2)
+    .attr("y", 0-margin.left)
+    .attr("dy", "1.75em")
+    .classed("inactive", true)
+    .text("Obese (%)");
 })
