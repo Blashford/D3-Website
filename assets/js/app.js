@@ -22,7 +22,7 @@ var svg = d3.select("#scatter")
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-d3.csv("/assets/data/data.csv").then(data => {
+d3.csv("../data/data.csv").then(data => {
     console.log(data)
     
     data.forEach(d => {
