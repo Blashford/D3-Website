@@ -40,7 +40,7 @@ d3.csv("assets/data/data.csv").then(data => {
     
     var yLinearScale = d3.scaleLinear()
         .domain([d3.min(data, d => d.healthcare) - 1, d3.max(data, d => d.healthcare) + 1])
-        .range([height, 0])
+        .range([height, 0]);
     
     var xAxis = d3.axisBottom(xLinearScale);
     var yAxis = d3.axisLeft(yLinearScale);
@@ -48,27 +48,36 @@ d3.csv("assets/data/data.csv").then(data => {
     // append axes
     var x = chartGroup.append("g")
         .attr("transform", `translate(0, ${height})`)
+        .classed("xAxis", true)
         .call(xAxis);
     
     var y = chartGroup.append("g")
+        .classed("yAxis", true)
         .call(yAxis);
     
-
-    var circles = chartGroup.selectAll("g.circle")
+    var toolTip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([-3, 0])
+        .html(function(d, i) { return `${d.state}`; }); //<br> ${}: ${}`
+      svg.call(toolTip);
+    
+    var circles = chartGroup.selectAll("g.circle");
     
     circles = circles.data(data)
         .enter()
         .append("g")
         .classed("stateCircle", true)
+        .on("mouseover", toolTip.show)
+        .on("mouseout", toolTip.hide);
 
-    circles.append("svg:circle")
+    circles.append("svg:circle");
 
     circles.selectAll("circle")
         .attr("cx", d=> xLinearScale(d.poverty))
         .attr("cy", d=> yLinearScale(d.healthcare))
-        .attr("r", "9")
+        .attr("r", "9");
     
-    circles.append("text")
+    circles.append("text");
 
     circles.selectAll("text")
         .text(d => d.abbr)
@@ -77,6 +86,12 @@ d3.csv("assets/data/data.csv").then(data => {
         .attr("y", d=> yLinearScale(d.healthcare) +3)
         .attr("font-size", "0.5em")
         .classed("stateText", true);
+
+    var tool_tip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([-8, 0])
+        .html(function(d) { return d.state; });
+      svg.call(tool_tip);
     
     var poverty = chartGroup.append("text")
         .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
@@ -136,11 +151,8 @@ d3.csv("assets/data/data.csv").then(data => {
         .domain([d3.min(data, d => d.age) - 1, d3.max(data, d => d.age) + 1])
         .range([0, width]);
         xAxis = d3.axisBottom(xLinearScale);
-        x.html("");
-        d3.selectAll(".newXAxis").html("");
-        chartGroup.append("g")
-            .attr("class", "newXAxis")
-            .attr("transform", `translate(0, ${height})`)
+        
+        d3.select(".xAxis")
             .transition()
             .duration(500)
             .call(xAxis);
@@ -166,11 +178,8 @@ d3.csv("assets/data/data.csv").then(data => {
         .domain([d3.min(data, d => d.poverty) - 1, d3.max(data, d => d.poverty) + 1])
         .range([0, width]);
         xAxis = d3.axisBottom(xLinearScale);
-        x.html("");
-        d3.selectAll(".newXAxis").html("");
-        chartGroup.append("g")
-            .attr("class","newXAxis")
-            .attr("transform", `translate(0, ${height})`)
+        
+        d3.select(".xAxis")
             .transition()
             .duration(500)
             .call(xAxis);
@@ -196,11 +205,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .domain([d3.min(data, d => d.income) - 1000, d3.max(data, d => d.income) + 1000])
         .range([0, width]);
         xAxis = d3.axisBottom(xLinearScale);
-        x.html("");
-        d3.selectAll(".newXAxis").html("");
-        chartGroup.append("g")
-            .attr("class","newXAxis")
-            .attr("transform", `translate(0, ${height})`)
+        d3.select(".xAxis")
             .transition()
             .duration(500)
             .call(xAxis);
@@ -226,10 +231,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .domain([d3.min(data, d => d.healthcare) - 1, d3.max(data, d => d.healthcare) + 1])
         .range([height, 0]);
         yAxis = d3.axisLeft(yLinearScale);
-        y.html("");
-        d3.selectAll(".newYAxis").html("");
-        chartGroup.append("g")
-            .attr("class","newYAxis")
+        d3.select(".yAxis")
             .transition()
             .duration(500)
             .call(yAxis);
@@ -255,10 +257,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .domain([d3.min(data, d => d.smokes) - 1, d3.max(data, d => d.smokes) + 1])
         .range([height, 0]);
         yAxis = d3.axisLeft(yLinearScale);
-        y.html("");
-        d3.selectAll(".newYAxis").html("");
-        chartGroup.append("g")
-            .attr("class","newYAxis")
+        d3.select(".yAxis")
             .transition()
             .duration(500)
             .call(yAxis);
@@ -284,10 +283,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .domain([d3.min(data, d => d.obesity) - 1, d3.max(data, d => d.obesity) + 1])
         .range([height, 0]);
         yAxis = d3.axisLeft(yLinearScale);
-        y.html("");
-        d3.selectAll(".newYAxis").html("");
-        chartGroup.append("g")
-            .attr("class","newYAxis")
+        d3.select(".yAxis")
             .transition()
             .duration(500)
             .call(yAxis);
