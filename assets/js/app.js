@@ -390,7 +390,7 @@ d3.csv("assets/data/data.csv").then(data => {
             }
             else {
                 xAxisKey = "Household Income (Median)";
-                xAxisValue = d.income;
+                xAxisValue = "$" + d.income;
             }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
@@ -447,7 +447,7 @@ d3.csv("assets/data/data.csv").then(data => {
             }
             else {
                 xAxisKey = "Household Income (Median)";
-                xAxisValue = d.income;
+                xAxisValue = "$" + d.income;
             }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
@@ -504,7 +504,7 @@ d3.csv("assets/data/data.csv").then(data => {
             }
             else {
                 xAxisKey = "Household Income (Median)";
-                xAxisValue = d.income;
+                xAxisValue = "$" + d.income;
             }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
