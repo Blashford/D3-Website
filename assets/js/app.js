@@ -55,9 +55,9 @@ d3.csv("assets/data/data.csv").then(data => {
         .classed("yAxis", true)
         .call(yAxis);
     
-    var xAxisKey = "";
+    var xAxisKey = "Poverty";
     var xAxisValue = "";
-    var yAxisKey = "";
+    var yAxisKey = "Lacks Healthcare";
     var yAxisValue = "";
     var toolTip = d3.tip()
         .attr("class", "d3-tip")
@@ -102,7 +102,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
         .attr("text-anchor", "middle")
         .attr("font-size", "16px")
-        .classed("active", true)
+        .classed("active x", true)
         .text("In Poverty (%)");
 
     var age = chartGroup.append("text")
@@ -126,7 +126,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .attr("x", 0 - height / 2)
         .attr("y", 0 - margin.left)
         .attr("dy", "4.25em")
-        .classed("active", true)
+        .classed("active y", true)
         .text("Lacks Healthcare (%)");
 
     var smokes = chartGroup.append("text")
@@ -147,9 +147,12 @@ d3.csv("assets/data/data.csv").then(data => {
 
 
     age.on("click", function (d) {
-        age.attr("class", "active");
-        poverty.attr("class", "inactive");
-        income.attr("class", "inactive");
+        age.classed("active x", true)
+            .classed("inactive", false);
+        poverty.classed("inactive ", true)
+            .classed("active x", false);
+        income.classed("inactive", true)
+            .classed("active x", false);
 
         var selected = d3.selectAll(".stateCircle");
         xLinearScale = d3.scaleLinear()
@@ -171,18 +174,35 @@ d3.csv("assets/data/data.csv").then(data => {
             .transition()
             .duration(500)
             .attr("x", data => xLinearScale(data.age));
-
+        var yAxisText = d3.select(".y").text()
         toolTip.html(function (d) { 
             xAxisKey = "Age";
             xAxisValue = d.age;
+            if (yAxisText === "Lacks Healthcare (%)") {
+                yAxisKey = "Lacks Healthcare";
+                yAxisValue = d.healthcare + "%";
+            }
+            else if (yAxisText === "Smokes (%)") {
+                yAxisKey = "Smokes";
+                yAxisValue = d.smokes + "%";
+            }
+            else {
+                yAxisKey = "Obese";
+                yAxisValue = d.obesity + "%";
+            }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
+
+        
         
     });
 
     poverty.on("click", function (d) {
-        age.attr("class", "inactive");
-        poverty.attr("class", "active");
-        income.attr("class", "inactive");
+        age.classed("inactive", true)
+            .classed("active x", false);
+        poverty.classed("inactive", false)
+            .classed("active x", true);
+        income.classed("inactive", true)
+            .classed("active x", false);
 
         var selected = d3.selectAll(".stateCircle");
         xLinearScale = d3.scaleLinear()
@@ -204,17 +224,32 @@ d3.csv("assets/data/data.csv").then(data => {
             .transition()
             .duration(500)
             .attr("x", data => xLinearScale(data.poverty));
-
+        var yAxisText = d3.select(".y").text()
         toolTip.html(function (d) { 
             xAxisKey = "Poverty";
             xAxisValue = d.poverty + "%";
+            if (yAxisText === "Lacks Healthcare (%)") {
+                yAxisKey = "Lacks Healthcare";
+                yAxisValue = d.healthcare + "%";
+            }
+            else if (yAxisText === "Smokes (%)") {
+                yAxisKey = "Smokes";
+                yAxisValue = d.smokes + "%";
+            }
+            else {
+                yAxisKey = "Obese";
+                yAxisValue = d.obesity + "%";
+            }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
 
     income.on("click", function (d) {
-        age.attr("class", "inactive");
-        poverty.attr("class", "inactive");
-        income.attr("class", "active");
+        age.classed("inactive", true)
+            .classed("active x", false);
+        poverty.classed("inactive", true)
+            .classed("active x", false);
+        income.classed("inactive", false)
+            .classed("active x", true);
 
         var selected = d3.selectAll(".stateCircle");
         xLinearScale = d3.scaleLinear()
@@ -235,18 +270,32 @@ d3.csv("assets/data/data.csv").then(data => {
             .transition()
             .duration(500)
             .attr("x", data => xLinearScale(data.income));
-
+        var yAxisText = d3.select(".y").text()
         toolTip.html(function (d) { 
             xAxisKey = "Income";
             xAxisValue = "$" + d.income;
-            
+            if (yAxisText === "Lacks Healthcare (%)") {
+                yAxisKey = "Lacks Healthcare";
+                yAxisValue = d.healthcare + "%";
+            }
+            else if (yAxisText === "Smokes (%)") {
+                yAxisKey = "Smokes";
+                yAxisValue = d.smokes + "%";
+            }
+            else {
+                yAxisKey = "Obese";
+                yAxisValue = d.obesity + "%";
+            }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
 
     healthcare.on("click", function (d) {
-        healthcare.attr("class", "active");
-        smokes.attr("class", "inactive");
-        obese.attr("class", "inactive");
+        healthcare.classed("inactive", false)
+            .classed("active y", true);
+        smokes.classed("inactive", true)
+            .classed("active y", false);
+        obese.classed("inactive", true)
+            .classed("active y", false);
 
         var selected = d3.selectAll(".stateCircle");
         yLinearScale = d3.scaleLinear()
@@ -267,18 +316,32 @@ d3.csv("assets/data/data.csv").then(data => {
             .transition()
             .duration(500)
             .attr("y", data => yLinearScale(data.healthcare) + 3);
-
-        toolTip.html(function (d) { 
+        var xAxisText = d3.select(".x").text()
+        toolTip.html(function (d) {
             yAxisKey = "Lacks Healthcare";
             yAxisValue = d.healthcare + "%";
-            
+            if (xAxisText === "In Poverty (%)") {
+                xAxisKey = "Poverty";
+                xAxisValue = d.poverty + "%";
+            }
+            else if (xAxisText === "Age (Median)") {
+                xAxisKey = "Age";
+                xAxisValue = d.age;
+            }
+            else {
+                xAxisKey = "Household Income (Median)";
+                xAxisValue = d.income;
+            }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
 
     smokes.on("click", function (d) {
-        healthcare.attr("class", "inactive");
-        smokes.attr("class", "active");
-        obese.attr("class", "inactive");
+        healthcare.classed("inactive", true)
+            .classed("active y", false);
+        smokes.classed("inactive", false)
+            .classed("active y", true);
+        obese.classed("inactive", true)
+            .classed("active y", false);
 
         var selected = d3.selectAll(".stateCircle");
         yLinearScale = d3.scaleLinear()
@@ -299,18 +362,32 @@ d3.csv("assets/data/data.csv").then(data => {
             .transition()
             .duration(500)
             .attr("y", data => yLinearScale(data.smokes) + 3);
-
+        var xAxisText = d3.select(".x").text()
         toolTip.html(function (d) { 
             yAxisKey = "Smokes";
             yAxisValue = d.smokes + "%";
-            
+            if (xAxisText === "In Poverty (%)") {
+                xAxisKey = "Poverty";
+                xAxisValue = d.poverty + "%";
+            }
+            else if (xAxisText === "Age (Median)") {
+                xAxisKey = "Age";
+                xAxisValue = d.age;
+            }
+            else {
+                xAxisKey = "Household Income (Median)";
+                xAxisValue = d.income;
+            }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
 
     obese.on("click", function (d) {
-        healthcare.attr("class", "inactive");
-        smokes.attr("class", "inactive");
-        obese.attr("class", "active");
+        healthcare.classed("inactive", true)
+            .classed("active y", false);
+        smokes.classed("inactive", true)
+            .classed("active y", false);
+        obese.classed("inactive", false)
+            .classed("active y", true);
 
         var selected = d3.selectAll(".stateCircle");
         yLinearScale = d3.scaleLinear()
@@ -331,11 +408,22 @@ d3.csv("assets/data/data.csv").then(data => {
             .transition()
             .duration(500)
             .attr("y", data => yLinearScale(data.obesity) + 3);
-
+        var xAxisText = d3.select(".x").text()
         toolTip.html(function (d) { 
             yAxisKey = "Obese";
             yAxisValue = d.obesity + "%";
-            
+            if (xAxisText === "In Poverty (%)") {
+                xAxisKey = "Poverty";
+                xAxisValue = d.poverty + "%";
+            }
+            else if (xAxisText === "Age (Median)") {
+                xAxisKey = "Age";
+                xAxisValue = d.age;
+            }
+            else {
+                xAxisKey = "Household Income (Median)";
+                xAxisValue = d.income;
+            }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
 });
