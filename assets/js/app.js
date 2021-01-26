@@ -62,7 +62,7 @@ d3.csv("assets/data/data.csv").then(data => {
     var toolTip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-3, 0])
-        .html(function (d, i) { 
+        .html(function (d) { 
             xAxisKey = "Poverty";
             xAxisValue = d.poverty + "%";
             yAxisKey = "Lacks Healthcare";
