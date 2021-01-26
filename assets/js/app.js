@@ -162,6 +162,14 @@ d3.csv("assets/data/data.csv").then(data => {
         .attr("dy", "1.75em")
         .classed("inactive", true)
         .text("Obese (%)");
+    
+    // this is a function that formats currency to make the income in the tooltips look nicer
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0, 
+        maximumFractionDigits: 0
+        });
 
     // next we have all of our listeners for the different labels
     age.on("click", function (d) {
@@ -321,7 +329,7 @@ d3.csv("assets/data/data.csv").then(data => {
         toolTip.html(function (d) {
             // then we update the tooltips with the current x axis 
             xAxisKey = "Income";
-            xAxisValue = "$" + d.income;
+            xAxisValue = formatter.format(d.income);
             // and we have some conditionals to check for the current y axis
             if (yAxisText === "Lacks Healthcare (%)") {
                 yAxisKey = "Lacks Healthcare";
@@ -390,7 +398,7 @@ d3.csv("assets/data/data.csv").then(data => {
             }
             else {
                 xAxisKey = "Household Income (Median)";
-                xAxisValue = "$" + d.income;
+                xAxisValue = formatter.format(d.income);
             }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
@@ -447,7 +455,7 @@ d3.csv("assets/data/data.csv").then(data => {
             }
             else {
                 xAxisKey = "Household Income (Median)";
-                xAxisValue = "$" + d.income;
+                xAxisValue = formatter.format(d.income);
             }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
@@ -504,7 +512,7 @@ d3.csv("assets/data/data.csv").then(data => {
             }
             else {
                 xAxisKey = "Household Income (Median)";
-                xAxisValue = "$" + d.income;
+                xAxisValue = formatter.format(d.income);
             }
                 return `${d.state} <br> ${xAxisKey}: ${xAxisValue} <br> ${yAxisKey}: ${yAxisValue}`; })
     });
